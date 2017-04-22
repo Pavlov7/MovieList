@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}"></title>
+    <link th:href="@{/front-end/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/front-end/css/table.css}"/>
+</head>
+<body>
+<header th:replace="fragments/header"></header>
+<div th:replace="${view}"></div>
+<footer>
+    <script th:src="@{/front-end/jquery/jquery.min.js}"></script>
+    <script th:src="@{/front-end/bootstrap/js/bootstrap.min.js}"></script>
+</footer>
+</body>
+</html>
