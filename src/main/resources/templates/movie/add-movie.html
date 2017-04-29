@@ -1,0 +1,49 @@
+<div>
+    <form method="post" th:object="${validateMovieModel}">
+        <div class="container col-lg-2 col-md-3">
+            <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-danger'">
+                <label class="form-control-label" for="nameId">Name</label>
+                <input type="text" class="form-control" id="nameId" aria-describedby="nameHelp" th:field="*{name}"/>
+                <div id="nameHelp" class="form-control-feedback" th:each="error : ${#fields.errors('name')}"
+                     th:text="${error}">
+                </div>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('genre')} ?'has-danger'">
+                <label for="genreHelp">Genre</label>
+                <select class="form-control" th:field="*{genre}">
+                    <option th:each="genre : ${genres}" th:value="${genre}" th:text="${genre}">1</option>
+                </select>
+                <div id="genreHelp" class="form-control-feedback" th:each="error : ${#fields.errors('genre')}"
+                     th:text="${error}">
+                </div>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('airDate')} ?'has-danger'">
+                <label for="date">Air Date</label>
+                <input type="date" class="form-control" id="date" aria-describedby="dateHelp" placeholder="yyyy-MM-dd" th:field="*{airDate}"/>
+                <div id="dateHelp" class="form-control-feedback" th:each="error : ${#fields.errors('airDate')}"
+                     th:text="${error}">
+                </div>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('director')} ? 'has-danger'">
+                <label for="dir">Director</label>
+                <input type="text" class="form-control" id="dir" aria-describedby="directHelp" th:field="*{director}"/>
+                <div id="directorHelp" class="form-control-feedback" th:each="error : ${#fields.errors('director')}"
+                     th:text="${error}">
+                </div>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('producer')} ? 'has-danger'">
+                <label for="prod">Producer</label>
+                <input type="text" class="form-control" id="prod" aria-describedby="prodHelp" th:field="*{producer}"/>
+                <div id="prodHelp" class="form-control-feedback" th:each="error : ${#fields.errors('producer')}"
+                     th:text="${error}">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+</div>
