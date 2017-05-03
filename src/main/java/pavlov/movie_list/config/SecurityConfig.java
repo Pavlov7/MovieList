@@ -15,9 +15,19 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**", "/front-end/**").permitAll()
-                //.antMatchers("/users").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                .antMatchers("/", "/front-end/**", "/register").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().accessDeniedPage("/error/403")
+                .and()
+                .formLogin().loginPage("/login").permitAll()
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .and()
+                .rememberMe()
+                .rememberMeCookieName("RememberMeMovieList")
+                .rememberMeParameter("rememberMe")
+                .tokenValiditySeconds(604800) // 1 week
                 .and().csrf().disable();
     }
 }

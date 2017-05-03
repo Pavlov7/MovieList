@@ -1,0 +1,38 @@
+<div>
+    <form method="post" th:object="${registerModel}" class="offset-4 col-lg-4">
+        <div class="container">
+            <div class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'has-danger'">
+                <label class="form-control-label">Username</label>
+                <input type="text" class="form-control" id="username" th:field="*{username}"/>
+                <div class="form-control-feedback" th:each="error : ${#fields.errors('username')}"
+                     th:text="${error}">
+                </div>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-danger'">
+                <label class="form-control-label">Password</label>
+                <input type="password" class="form-control" id="password" th:field="*{password}"/>
+                <div class="form-control-feedback" th:each="error : ${#fields.errors('password')}"
+                     th:text="${error}">
+                </div>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('confirmPassword')} ? 'has-danger'">
+                <label class="form-control-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}"/>
+                <div class="form-control-feedback" th:each="error : ${#fields.errors('confirmPassword')}"
+                     th:text="${error}">
+                </div>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'has-danger'">
+                <label class="form-control-label">Email</label>
+                <input type="email" class="form-control" id="email" th:field="*{email}"/>
+                <div class="form-control-feedback" th:each="error : ${#fields.errors('email')}"
+                     th:text="${error}">
+                </div>
+            </div>
+            <div th:if="${error} != null" class="form-group has-danger">
+                <div class="form-control-feedback" th:text="${error}"></div>
+            </div>
+            <button type="submit" class="btn btn-default">Register</button>
+        </div>
+    </form>
+</div>

@@ -17,4 +17,9 @@ public class MovieListApplication {
 	public ModelMapper getModelMapper(){
 		return new ModelMapper();
 	}
+
+	@Bean
+	public BCryptPasswordEncoder getBCryptPasswordEncoder(){
+		return new BCryptPasswordEncoder();
+	}
 }

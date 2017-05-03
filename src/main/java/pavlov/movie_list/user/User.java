@@ -2,6 +2,7 @@ package pavlov.movie_list.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pavlov.movie_list.movie.WatchedMovie;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -19,6 +20,7 @@ public class User implements UserDetails {
     private long id;
     private String username;
     private String password;
+    private String email;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -29,11 +31,8 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities;
 
-    //@ManyToMany()
-    //@JoinTable(name = "users_movies",
-            //joinColumns = @JoinColumn(name = "user_id"),
-            //inverseJoinColumns = @JoinColumn(name = "movie_id",referencedColumnName = "id"))
-    // private Set<Movie> movies;
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<WatchedMovie> movies;
 
     @Override
     public String getUsername() {
@@ -104,5 +103,21 @@ public class User implements UserDetails {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Set<WatchedMovie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<WatchedMovie> movies) {
+        this.movies = movies;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
