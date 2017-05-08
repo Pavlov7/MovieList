@@ -15,7 +15,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/front-end/**", "/register").permitAll()
+                .antMatchers("/", "/front-end/**", "/register", "/movies").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedPage("/error/403")

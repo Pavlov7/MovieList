@@ -2,7 +2,9 @@ package pavlov.movie_list.movie.service;
 
 import org.springframework.stereotype.Service;
 import pavlov.movie_list.movie.Movie;
+import pavlov.movie_list.movie.WatchedMovie;
 import pavlov.movie_list.movie.model.ValidateMovieModel;
+import pavlov.movie_list.movie.model.ValidateWatchedMovieModel;
 
 import java.util.List;
 
@@ -13,5 +15,13 @@ import java.util.List;
 public interface MovieService {
     void save(ValidateMovieModel validateMovieModel);
 
-    List<Movie> getAll();
+    List<Movie> getAllAscending();
+
+    List<Movie> getAllDescending();
+
+    Movie getById(Long id);
+
+    void addWatchedMovie(ValidateWatchedMovieModel validateWatchedMovieModel, String username, Long movieId);
+
+    List<WatchedMovie> getWatchedMoviesByUsername(String username);
 }

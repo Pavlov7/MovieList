@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class ValidateMovieModel {
     @NotBlank(message = "Name cannot be blank")
-    @Size(min = 3, max = 20, message = "Invalid name size")
+    @Size(min = 1, max = 20, message = "Invalid name size")
     private String name;
 
     @NotNull(message = "Should be selected")
@@ -31,6 +31,10 @@ public class ValidateMovieModel {
     @NotBlank(message = "Producer cannot be blank")
     @Size(min = 3, max = 15, message = "Invalid producer name size")
     private String producer;
+
+    @NotBlank(message = "Description cannot be blank")
+    @Size(min = 10, max = 200,message = "Invalid description size")
+    private String description;
 
     public String getName() {
         return name;
@@ -70,5 +74,13 @@ public class ValidateMovieModel {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

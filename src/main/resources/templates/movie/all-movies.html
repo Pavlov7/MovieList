@@ -1,75 +1,33 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <div class="text-center"><h1 class="display-3">SoftUni Store</h1></div>
+            <div class="text-center"><h1 class="display-3">Movie List</h1></div>
 
             <form class="form-inline">
                 Filter:
-                <input type="submit" name="filter" class="btn btn-link" value="All"/>
-                <input type="submit" name="filter" class="btn btn-link" value="Owned"/>
+                <input type="submit" name="filter" class="btn btn-link" value="Ascending"/>
+                <input type="submit" name="filter" class="btn btn-link" value="Descending"/>
             </form>
 
             <div class="card-group">
-                <div class="card col-4 thumbnail">
+                <th:block th:each="movie : ${movies}">
+                <div class="card col-2 thumbnail">
 
-                    <img
-                            class="card-image-top img-fluid img-thumbnail"
-                            onerror="this.src='https://i.ytimg.com/vi/BqJyluskTfM/maxresdefault.jpg';"
-                            src="https://i.ytimg.com/vi/BqJyluskTfM/maxresdefault.jpg">
+                    <img class="card-image-top img-fluid img-thumbnail"
+                         th:src="@{/front-end/movie/images/} + ${movie.id} + @{.jpg}"
+                    />
 
                     <div class="card-block">
-                        <h4 class="card-title">Mass Effect Andromeda</h4>
-                        <p class="card-text"><strong>Price</strong> - 60&euro;</p>
-                        <p class="card-text"><strong>Size</strong> - 62.5 GB</p>
-                        <p class="card-text">Mass Effect: Andromeda is an action role-playing game in which the player takes control of either Scott or Sara Ryder from a third-person perspective.</p>
+                        <h4 class="card-title" th:text="${movie.name}"></h4>
+                        <p class="card-text" th:text="|Genre: ${movie.genre}|"></p>
                     </div>
 
                     <div class="card-footer">
-                        <a class="card-button btn btn-outline-primary" name="info" href="#">Info</a>
-                        <a class="card-button btn btn-primary" name="buy" href="#">Buy</a>
+                        <a class="card-button btn btn-outline-primary btn-block btn-sm" name="info" th:href="@{movies/{id}(id=${movie.id})}">Info</a>
+                        <a class="card-button btn btn-primary btn-block btn-sm" name="add" th:href="@{movies/add-to-list/{id}(id=${movie.id})}">Add to my list</a>
                     </div>
-
                 </div>
-                <div class="card col-4 thumbnail">
-
-                    <img
-                            class="card-image-top img-fluid img-thumbnail"
-                            onerror="this.src='https://i.ytimg.com/vi/BqJyluskTfM/maxresdefault.jpg';"
-                            src="https://i.ytimg.com/vi/BqJyluskTfM/maxresdefault.jpg">
-
-                    <div class="card-block">
-                        <h4 class="card-title">Mass Effect Andromeda</h4>
-                        <p class="card-text"><strong>Price</strong> - 60&euro;</p>
-                        <p class="card-text"><strong>Size</strong> - 62.5 GB</p>
-                        <p class="card-text">Mass Effect: Andromeda is an action role-playing game in which the player takes control of either Scott or Sara Ryder from a third-person perspective.</p>
-                    </div>
-
-                    <div class="card-footer">
-                        <a class="card-button btn btn-outline-primary" name="info" href="#">Info</a>
-                        <a class="card-button btn btn-primary" name="buy" href="#">Buy</a>
-                    </div>
-
-                </div>
-                <div class="card col-4 thumbnail">
-
-                    <img
-                            class="card-image-top img-fluid img-thumbnail"
-                            onerror="this.src='https://i.ytimg.com/vi/BqJyluskTfM/maxresdefault.jpg';"
-                            src="https://i.ytimg.com/vi/BqJyluskTfM/maxresdefault.jpg">
-
-                    <div class="card-block">
-                        <h4 class="card-title">Mass Effect Andromeda</h4>
-                        <p class="card-text"><strong>Price</strong> - 60&euro;</p>
-                        <p class="card-text"><strong>Size</strong> - 62.5 GB</p>
-                        <p class="card-text">Mass Effect: Andromeda is an action role-playing game in which the player takes control of either Scott or Sara Ryder from a third-person perspective.</p>
-                    </div>
-
-                    <div class="card-footer">
-                        <a class="card-button btn btn-outline-primary" name="info" href="#">Info</a>
-                        <a class="card-button btn btn-primary" name="buy" href="#">Buy</a>
-                    </div>
-
-                </div>
+                </th:block>
             </div>
         </div>
     </div>

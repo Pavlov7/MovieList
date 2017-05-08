@@ -1,0 +1,26 @@
+<div class="container">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Movie</th>
+            <th>Rating</th>
+            <th>Watched</th>
+            <th>View Details</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="watchedMovie : ${watchedMovies}">
+            <th scope="row" th:text="${watchedMovie.movie.name}"></th>
+            <td th:text="${watchedMovie.rating}"></td>
+            <td th:text="${#dates.format(watchedMovie.dateWatched, 'yyyy-MM-dd')}"></td>
+            <td>
+                <a th:href="@{/movies/{id}(id=${watchedMovie.movie.id})}">Details</a>
+            </td>
+            <td>
+                <a th:href="@{/movies/edit-in-list/{id}(id=${watchedMovie.id})}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

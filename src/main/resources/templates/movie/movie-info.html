@@ -1,0 +1,20 @@
+<div class="container" th:object="${movie}" style="font-size: 24px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center"><h1 class="display-3" th:text="*{name}"></h1>
+                <img class="card-image-top img-fluid img-thumbnail"
+                     th:src="@{/front-end/movie/images/} + *{id} + @{.jpg}"
+                     style="height: 300px;width: auto;"
+                />
+                <br/>
+                <p th:text="*{description}"></p>
+                <p><strong>Director: </strong><span th:text="*{director}"></span></p>
+                <p><strong>Producer: </strong><span th:text="*{producer}"></span></p>
+                <p><strong>Date aired: </strong><span th:text="${#dates.format(movie.airDate, 'dd-MMM-yyyy')}"></span></p>
+                <a class="card-button btn btn-primary" name="add" th:href="@{add-to-list/{id}(id=*{id})}">Add to my list</a>
+                <br/>
+                <br/>
+            </div>
+        </div>
+    </div>
+</div>

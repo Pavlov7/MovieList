@@ -1,50 +1,27 @@
-package pavlov.movie_list.movie;
+package pavlov.movie_list.movie.model;
 
 import pavlov.movie_list.movie.enums.Genre;
-import pavlov.movie_list.user.User;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 /**
- * Created by Daniel on 25-Apr-17.
+ * Created by Daniel on 02-May-17.
  */
-@Entity
-@Table(name = "movies")
-public class Movie {
+public class ViewMovieModel { //TODO: check if needed
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
-    @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @Column(name = "airDate")
     private Date airDate;
 
     private String director;
 
     private String producer;
 
-    @Column(name = "watchedBy")
-    @OneToMany(mappedBy = "movie", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<WatchedMovie> watchedBy;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -86,19 +63,19 @@ public class Movie {
         this.producer = producer;
     }
 
-    public Set<WatchedMovie> getWatchedBy() {
-        return watchedBy;
-    }
-
-    public void setWatchedBy(Set<WatchedMovie> watchedBy) {
-        this.watchedBy = watchedBy;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
