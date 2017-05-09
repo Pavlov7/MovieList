@@ -7,6 +7,7 @@
             <th>Watched</th>
             <th>View Details</th>
             <th>Edit</th>
+            <th>Remove</th>
         </tr>
         </thead>
         <tbody>
@@ -19,6 +20,9 @@
             </td>
             <td>
                 <a th:href="@{/movies/edit-in-list/{id}(id=${watchedMovie.id})}">Edit</a>
+            </td>
+            <td>
+                <a th:href="@{/movies/remove-list/{id}(id=${watchedMovie.id})}">Remove</a>
             </td>
         </tr>
         </tbody>

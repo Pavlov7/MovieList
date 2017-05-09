@@ -66,4 +66,8 @@ public class MovieServiceImpl implements MovieService {
         return this.watchedMovieRepository.findAllByUsername(username);
     }
 
+    @Override
+    public boolean movieAlreadyInList(Long movieId, String username) {
+        return this.watchedMovieRepository.findOneByMovieIdAndUsername(movieId, username) != null;
+    }
 }

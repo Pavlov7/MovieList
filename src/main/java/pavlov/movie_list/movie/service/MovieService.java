@@ -24,4 +24,6 @@ public interface MovieService {
     void addWatchedMovie(ValidateWatchedMovieModel validateWatchedMovieModel, String username, Long movieId);
 
     List<WatchedMovie> getWatchedMoviesByUsername(String username);
+
+    boolean movieAlreadyInList(Long movieId, String username);
 }

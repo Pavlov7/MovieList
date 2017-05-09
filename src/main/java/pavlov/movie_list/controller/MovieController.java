@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import pavlov.movie_list.movie.Movie;
 import pavlov.movie_list.movie.WatchedMovie;
@@ -46,7 +47,7 @@ public class MovieController {
 
 
     @GetMapping("/add")
-    private String addMovieGET(Model model){
+    private String addMovieGET(Model model) {
         model.addAttribute("title", "Add Movie");
         model.addAttribute("view", "movie/add-movie");
         model.addAttribute("validateMovieModel", new ValidateMovieModel());
@@ -55,23 +56,23 @@ public class MovieController {
 
     @PostMapping("/add")
     private String addMoviePOST(@Valid @ModelAttribute("validateMovieModel") ValidateMovieModel validateMovieModel, BindingResult bindingResult, Model model) {
-            if (bindingResult.hasErrors()) {
-                model.addAttribute("title", "Add Movie");
-                model.addAttribute("view", "movie/add-movie");
-                return "base-layout";
-            }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("title", "Add Movie");
+            model.addAttribute("view", "movie/add-movie");
+            return "base-layout";
+        }
 
-            this.movieService.save(validateMovieModel);
+        this.movieService.save(validateMovieModel);
 
-            return "redirect:/";
+        return "redirect:/";
     }
 
     @GetMapping("")
-    private String allMoviesGET(Model model, HttpServletRequest httpServletRequest){
+    private String allMoviesGET(Model model, HttpServletRequest httpServletRequest) {
         List<Movie> movies = new ArrayList<>();
         String filter = httpServletRequest.getParameter("filter");
         filter = filter == null ? "Ascending" : filter;
-        switch (filter){
+        switch (filter) {
             case "Ascending":
                 movies = this.movieService.getAllAscending();
                 break;
@@ -86,10 +87,10 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    private String movieInfoGET(@PathVariable(name = "id") Long id, Model model){
+    private String movieInfoGET(@PathVariable(name = "id") Long id, Model model) {
         Movie movie = this.movieService.getById(id);
 
-        if (movie == null){
+        if (movie == null) {
             return "redirect:/movies";
         }
 
@@ -100,9 +101,9 @@ public class MovieController {
     }
 
     @GetMapping("/add-to-list/{id}")
-    private String addToListGET(@PathVariable(name = "id") Long id, Model model){
+    private String addToListGET(@PathVariable(name = "id") Long id, Model model) {
         Movie movie = this.movieService.getById(id);
-        if (movie == null){
+        if (movie == null) {
             return "redirect:/";
         }
         String movieName = movie.getName();
@@ -115,25 +116,30 @@ public class MovieController {
         return "base-layout";
     }
 
-    @PostMapping("/add-to-list/{id}") //TODO: add check if already in list
-    private String addToListPOST(@Valid @ModelAttribute("validateWatchedMovieModel") ValidateWatchedMovieModel validateWatchedMovieModel, BindingResult bindingResult, Model model, Principal principal, @PathVariable(name = "id") Long id){
+    @PostMapping("/add-to-list/{id}")
+    private String addToListPOST(@Valid @ModelAttribute("validateWatchedMovieModel") ValidateWatchedMovieModel validateWatchedMovieModel, BindingResult bindingResult, Model model, Principal principal, @PathVariable(name = "id") Long id, @RequestParam Byte rating) {
+        if (this.movieService.movieAlreadyInList(id, principal.getName())) {
+            bindingResult.addError(new FieldError("validateWatchedMovieModel", "isAlreadyInList", "Movie is already in your list"));
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Add Movie To List");
             model.addAttribute("view", "movie/add-movie-to-list");
             return "base-layout";
         }
 
+        validateWatchedMovieModel.setRating(rating);
         this.movieService.addWatchedMovie(validateWatchedMovieModel, principal.getName(), id);
 
         return "redirect:/movies/my-list";
     }
 
     @GetMapping("/my-list")
-    private String viewListGET(Model model, Principal principal){
+    private String viewListGET(Model model, Principal principal) {
         List<WatchedMovie> watchedMovies = this.movieService.getWatchedMoviesByUsername(principal.getName());
         model.addAttribute("title", "My List");
         model.addAttribute("watchedMovies", watchedMovies);
         model.addAttribute("view", "user/list");
-        return  "base-layout";
+        return "base-layout";
     }
 }

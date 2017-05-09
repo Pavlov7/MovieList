@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = IsInThePastValidator.class)
-public @interface IsInThePast {
+@Constraint(validatedBy = IsInThePastOrNullValidator.class)
+public @interface IsInThePastOrNull {
     String message() default "Date is not in the past";
 
     Class<?>[] groups() default {};

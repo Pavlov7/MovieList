@@ -7,13 +7,13 @@ import java.util.Date;
 /**
  * Created by Daniel on 25-Mar-17.
  */
-public class IsInThePastValidator implements ConstraintValidator<IsInThePast, Date> {
-   public void initialize(IsInThePast constraint) {
+public class IsInThePastOrNullValidator implements ConstraintValidator<IsInThePastOrNull, Date> {
+   public void initialize(IsInThePastOrNull constraint) {
    }
 
    public boolean isValid(Date date, ConstraintValidatorContext context) {
       if (date == null){
-         return false;
+         return true;
       }
       Date current = new Date();
       return date.before(current);

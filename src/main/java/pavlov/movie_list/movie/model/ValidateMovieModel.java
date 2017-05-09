@@ -2,7 +2,6 @@ package pavlov.movie_list.movie.model;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
-import pavlov.movie_list.movie.anot.IsInThePast;
 import pavlov.movie_list.movie.enums.Genre;
 
 import javax.validation.constraints.NotNull;
@@ -20,7 +19,6 @@ public class ValidateMovieModel {
     @NotNull(message = "Should be selected")
     private Genre genre;
 
-    @IsInThePast(message = "Is not in the future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date airDate;
 
