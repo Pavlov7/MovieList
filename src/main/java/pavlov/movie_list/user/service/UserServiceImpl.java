@@ -7,11 +7,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pavlov.movie_list.user.Role;
 import pavlov.movie_list.user.User;
 import pavlov.movie_list.user.model.RegisterModel;
+import pavlov.movie_list.user.repository.RoleRepository;
 import pavlov.movie_list.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Daniel on 29-Apr-17.
@@ -28,6 +34,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Override
     public void register(RegisterModel registerModel) {
         User user = this.modelMapper.map(registerModel, User.class);
@@ -37,6 +46,8 @@ public class UserServiceImpl implements UserService{
         user.setAccountNonLocked(true);
         user.setEnabled(true);
         user.setCredentialsNonExpired(true);
+        Set<Role> userRole = new HashSet<>(Collections.singletonList(this.roleRepository.findOne(new Long(2)))); //TODO: make constant
+        user.setAuthorities(userRole);
         this.userRepository.save(user);
     }
 

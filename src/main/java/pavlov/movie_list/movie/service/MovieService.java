@@ -19,6 +19,8 @@ public interface MovieService {
 
     List<Movie> getAllDescending();
 
+    List<Movie> getAllNotApproved();
+
     Movie getById(Long id);
 
     void addWatchedMovie(ValidateWatchedMovieModel validateWatchedMovieModel, String username, Long movieId);
@@ -26,4 +28,8 @@ public interface MovieService {
     List<WatchedMovie> getWatchedMoviesByUsername(String username);
 
     boolean movieAlreadyInList(Long movieId, String username);
+
+    void approveMovie(Long id, String adminUsername);
+
+    void delete(Movie movie);
 }

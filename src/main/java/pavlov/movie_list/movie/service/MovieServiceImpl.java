@@ -40,12 +40,17 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getAllAscending() {
-        return this.movieRepository.getAllByOrderByNameAsc();
+        return this.movieRepository.getAllByApprovedByIsNotNullOrderByNameAsc();
     }
 
     @Override
     public List<Movie> getAllDescending() {
-        return this.movieRepository.getAllByOrderByNameDesc();
+        return this.movieRepository.getAllByApprovedByIsNotNullOrderByNameDesc();
+    }
+
+    @Override
+    public List<Movie> getAllNotApproved() {
+        return this.movieRepository.getAllByApprovedByIsNullOrderByIdAsc();
     }
 
     @Override
@@ -69,5 +74,17 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public boolean movieAlreadyInList(Long movieId, String username) {
         return this.watchedMovieRepository.findOneByMovieIdAndUsername(movieId, username) != null;
+    }
+
+    @Override
+    public void approveMovie(Long id, String adminUsername) {
+        Movie movie = this.movieRepository.getOne(id);
+        movie.setApprovedBy(this.userService.getByUsername(adminUsername));
+        this.movieRepository.saveAndFlush(movie);
+    }
+
+    @Override
+    public void delete(Movie movie) {
+        this.movieRepository.delete(movie);
     }
 }

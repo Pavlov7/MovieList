@@ -14,12 +14,14 @@ import pavlov.movie_list.movie.model.ValidateMovieModel;
 import pavlov.movie_list.movie.model.ValidateWatchedMovieModel;
 import pavlov.movie_list.movie.model.ViewMovieModel;
 import pavlov.movie_list.movie.service.MovieService;
+import pavlov.movie_list.user.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Daniel on 26-Apr-17.
@@ -116,7 +118,7 @@ public class MovieController {
         return "base-layout";
     }
 
-    @PostMapping("/add-to-list/{id}")
+    @PostMapping("/add-to-list/{id}") //TODO: remove from list
     private String addToListPOST(@Valid @ModelAttribute("validateWatchedMovieModel") ValidateWatchedMovieModel validateWatchedMovieModel, BindingResult bindingResult, Model model, Principal principal, @PathVariable(name = "id") Long id, @RequestParam Byte rating) {
         if (this.movieService.movieAlreadyInList(id, principal.getName())) {
             bindingResult.addError(new FieldError("validateWatchedMovieModel", "isAlreadyInList", "Movie is already in your list"));
@@ -141,5 +143,46 @@ public class MovieController {
         model.addAttribute("watchedMovies", watchedMovies);
         model.addAttribute("view", "user/list");
         return "base-layout";
+    }
+
+    @GetMapping("/approve")
+    private String approveGET(Model model) {
+        List<Movie> movies = this.movieService.getAllNotApproved();
+        model.addAttribute("title", "Movies to be approve");
+        model.addAttribute("movies", movies);
+        model.addAttribute("view", "movie/approve-movies");
+        return "base-layout";
+    }
+
+    @GetMapping("/approve/{id}")
+    private String approveIdGET(@PathVariable Long id, Principal principal) {
+        if (movieService.getById(id).getApprovedBy() != null) {
+            return "redirect:/movies/approve";
+        }
+        this.movieService.approveMovie(id, principal.getName());
+        return "redirect:/movies/approve";
+    }
+
+    @GetMapping("/delete/{id}")
+    private String deleteGET(@PathVariable Long id, Model model) {
+        Movie movie = movieService.getById(id);
+        if (movie.getApprovedBy() != null) {
+            return "redirect:/movies/approve";
+        }
+        model.addAttribute("title", "Delete movie");
+        model.addAttribute("view", "movie/confirm-delete-movie");
+        model.addAttribute("movieTitle", movie.getName());
+        return "base-layout";
+    }
+
+    @PostMapping("/delete/{id}")
+    private String deletePOST(@PathVariable Long id, Model model) {
+        Movie movie = movieService.getById(id);
+        if (movie.getApprovedBy() != null) {
+            return "redirect:/movies/approve";
+        }
+
+        this.movieService.delete(movie);
+        return "redirect:/movies/approve";
     }
 }

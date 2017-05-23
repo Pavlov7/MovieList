@@ -24,19 +24,23 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @Column(name = "airDate")
+    //@Column(name = "airDate")
     private Date airDate;
 
     private String director;
 
     private String producer;
 
-    @Column(name = "watchedBy")
+    //@Column(name = "watchedBy")
     @OneToMany(mappedBy = "movie", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<WatchedMovie> watchedBy;
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @ManyToOne()
+    @JoinColumn(name = "admin_approved_id", referencedColumnName = "id")
+    private User approvedBy;
 
     public long getId() {
         return id;
@@ -100,5 +104,13 @@ public class Movie {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(User approvedBy) {
+        this.approvedBy = approvedBy;
     }
 }

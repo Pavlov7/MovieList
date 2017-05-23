@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center"><h1 class="display-3">Movies to be approved</h1></div>
+
+            <div class="card-group">
+                <th:block th:each="movie : ${movies}">
+                    <div class="card col-4 thumbnail">
+                        <img class="card-image-top"
+                             th:src="@{/front-end/movie/images/} + ${movie.id} + @{.jpg}"
+                        />
+                        <div class="card-block">
+                            <h4 class="card-title" th:text="${movie.name}"></h4>
+                            <p class="card-text" th:text="|Description: ${movie.description}|"></p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" th:text="|Genre: ${movie.genre}|"></li>
+                            <li class="list-group-item" th:text="|Director: ${movie.director}|"></li>
+                            <li class="list-group-item" th:text="|Producer: ${movie.producer}|"></li>
+                            <li class="list-group-item" th:text="|Date Aired: ${#dates.format(movie.airDate, 'dd-MMM-yyyy')}|"></li>
+                        </ul>
+                        <div class="card-block">
+                            <a class="card-button btn btn-primary btn-block btn-sm" th:href="@{approve/{id}(id=${movie.id})}">Approve</a>
+                            <a class="card-button btn btn-danger btn-block btn-sm" th:href="@{delete/{id}(id=${movie.id})}">Delete</a>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>

@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
-    List<Movie> getAllByOrderByNameAsc();
-    List<Movie> getAllByOrderByNameDesc();
+    List<Movie> getAllByApprovedByIsNotNullOrderByNameAsc();
+    List<Movie> getAllByApprovedByIsNotNullOrderByNameDesc();
+    List<Movie> getAllByApprovedByIsNullOrderByIdAsc();
 }

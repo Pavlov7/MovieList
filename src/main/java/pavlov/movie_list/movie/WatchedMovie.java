@@ -25,7 +25,6 @@ public class WatchedMovie {
 
     private Byte rating;
 
-    @Column(name = "dateWatched")
     private Date dateWatched;
 
     public Long getId() {
