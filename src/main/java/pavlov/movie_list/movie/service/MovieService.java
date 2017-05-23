@@ -32,4 +32,8 @@ public interface MovieService {
     void approveMovie(Long id, String adminUsername);
 
     void delete(Movie movie);
+
+    WatchedMovie getWatchedById(Long id);
+
+    void deleteWatched(WatchedMovie movie);
 }

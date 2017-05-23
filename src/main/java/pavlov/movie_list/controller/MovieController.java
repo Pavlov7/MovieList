@@ -116,7 +116,7 @@ public class MovieController {
         return Constants.BASE_LAYOUT;
     }
 
-    @PostMapping("/add-to-list/{id}") //TODO: remove from list
+    @PostMapping("/add-to-list/{id}") //TODO: add edit-in-list
     private String addToListPOST(@Valid @ModelAttribute("validateWatchedMovieModel") ValidateWatchedMovieModel validateWatchedMovieModel, BindingResult bindingResult, Model model, Principal principal, @PathVariable(name = "id") Long id, @RequestParam Byte rating) {
         if (this.movieService.movieAlreadyInList(id, principal.getName())) {
             bindingResult.addError(new FieldError("validateWatchedMovieModel", "isAlreadyInList", Constants.ALREADY_IN_LIST));
@@ -130,6 +130,16 @@ public class MovieController {
 
         validateWatchedMovieModel.setRating(rating);
         this.movieService.addWatchedMovie(validateWatchedMovieModel, principal.getName(), id);
+
+        return "redirect:/movies/my-list";
+    }
+
+    @GetMapping("/remove-list/{id}")
+    private String removeFromListGET(@PathVariable Long id, Principal principal){
+        WatchedMovie movie = this.movieService.getWatchedById(id);
+        if (movie != null && movie.getUser().getUsername().equals(principal.getName())){
+            this.movieService.deleteWatched(movie);
+        }
 
         return "redirect:/movies/my-list";
     }
@@ -164,7 +174,7 @@ public class MovieController {
     @GetMapping("/delete/{id}")
     private String deleteGET(@PathVariable Long id, Model model) {
         Movie movie = movieService.getById(id);
-        if (movie.getApprovedBy() != null) {
+        if (movie == null || movie.getApprovedBy() != null) {
             return "redirect:/movies/approve";
         }
         model.addAttribute("title", "Delete movie");
@@ -176,7 +186,7 @@ public class MovieController {
     @PostMapping("/delete/{id}")
     private String deletePOST(@PathVariable Long id, Model model) {
         Movie movie = movieService.getById(id);
-        if (movie.getApprovedBy() != null) {
+        if (movie == null || movie.getApprovedBy() != null) {
             return "redirect:/movies/approve";
         }
 

@@ -14,7 +14,8 @@
         <tr th:each="watchedMovie : ${watchedMovies}">
             <th scope="row" th:text="${watchedMovie.movie.name}"></th>
             <td th:text="${watchedMovie.rating}"></td>
-            <td th:text="${#dates.format(watchedMovie.dateWatched, 'yyyy-MM-dd')}"></td>
+            <td th:unless="${watchedMovie.dateWatched} == null" th:text="${#dates.format(watchedMovie.dateWatched, 'yyyy-MM-dd')}"></td>
+            <td th:if="${watchedMovie.dateWatched} == null" th:text="---"></td>
             <td>
                 <a th:href="@{/movies/{id}(id=${watchedMovie.movie.id})}">Details</a>
             </td>

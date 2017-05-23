@@ -87,4 +87,14 @@ public class MovieServiceImpl implements MovieService {
     public void delete(Movie movie) {
         this.movieRepository.delete(movie);
     }
+
+    @Override
+    public WatchedMovie getWatchedById(Long id) {
+        return this.watchedMovieRepository.getOne(id);
+    }
+
+    @Override
+    public void deleteWatched(WatchedMovie movie) {
+        this.watchedMovieRepository.delete(movie);
+    }
 }

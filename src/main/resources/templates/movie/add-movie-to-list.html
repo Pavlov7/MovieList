@@ -1,16 +1,16 @@
-<div class="container col-lg-2 col-md-3" style="font-size: 24px;">
+<div class="container col-lg-2 col-md-3 text-center" style="font-size: 24px;">
     <div class="row">
         <div class="col-12">
             <div class="text-center"><h1 class="display-3" th:text="${name}"></h1>
-                <img class="card-image-top img-fluid img-thumbnail"
+                <img
                      th:src="@{/front-end/movie/images/} + ${id} + @{.jpg}"
                      style="height: 300px;width: auto;"
                 />
                 <br/>
                 <form th:method="post" th:object="${validateWatchedMovieModel}">
-                    <div class="form-group row">
-                        <label class="form-control-label">Rating</label>
-                        <select class="form-control" name="rating">
+                    <div class="form-group">
+                        <label for="rating" class="form-control-label">Rating</label>
+                        <select id="rating" class="form-control" name="rating">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
