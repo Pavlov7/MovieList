@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pavlov.movie_list.movie.WatchedMovie;
+import pavlov.movie_list.constants.Constants;
 import pavlov.movie_list.user.model.RegisterModel;
 import pavlov.movie_list.user.service.UserService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Created by Daniel on 29-Apr-17.
@@ -30,19 +29,19 @@ public class UserController {
         model.addAttribute("title", "Register");
         model.addAttribute("view", "user/register");
         model.addAttribute("registerModel", new RegisterModel());
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @PostMapping("/register")
-    private String postRegister(@Valid @ModelAttribute RegisterModel registerModel, BindingResult bindingResult, Model model) {
+    private String registerPOST(@Valid @ModelAttribute RegisterModel registerModel, BindingResult bindingResult, Model model) {
         if (!registerModel.getPassword().equals(registerModel.getConfirmPassword())) {
-            bindingResult.addError(new FieldError("registerModel", "confirmPassword", "Passwords do not match"));
+            bindingResult.addError(new FieldError("registerModel", "confirmPassword", Constants.PASSWORDS_NOT_MATCH));
         }
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Register");
             model.addAttribute("view", "user/register");
-            return "base-layout";
+            return Constants.BASE_LAYOUT;
         }
 
         this.userService.register(registerModel);
@@ -51,12 +50,12 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    private String getlogin(@RequestParam(required = false) String error, Model model) {
+    private String loginGET(@RequestParam(required = false) String error, Model model) {
         model.addAttribute("title", "Login");
         model.addAttribute("view", "user/login");
         if (error != null) {
-            model.addAttribute("error", "Invalid Credentials");
+            model.addAttribute("error", Constants.INVALID_CREDENTIALS);
         }
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 }

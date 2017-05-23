@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pavlov.movie_list.constants.Constants;
 import pavlov.movie_list.user.Role;
 import pavlov.movie_list.user.User;
 import pavlov.movie_list.user.model.RegisterModel;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService{
         user.setAccountNonLocked(true);
         user.setEnabled(true);
         user.setCredentialsNonExpired(true);
-        Set<Role> userRole = new HashSet<>(Collections.singletonList(this.roleRepository.findOne(new Long(2)))); //TODO: make constant
+        Set<Role> userRole = new HashSet<>(Collections.singletonList(this.roleRepository.findOne(Constants.USER_ROLE_ID)));
         user.setAuthorities(userRole);
         this.userRepository.save(user);
     }
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userRepository.findOneByUsername(username);
         if(user == null){
-            throw new UsernameNotFoundException("Invalid Credentials");
+            throw new UsernameNotFoundException(Constants.INVALID_CREDENTIALS);
         }
 
         return user;

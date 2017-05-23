@@ -7,21 +7,19 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import pavlov.movie_list.constants.Constants;
 import pavlov.movie_list.movie.Movie;
 import pavlov.movie_list.movie.WatchedMovie;
 import pavlov.movie_list.movie.enums.Genre;
 import pavlov.movie_list.movie.model.ValidateMovieModel;
 import pavlov.movie_list.movie.model.ValidateWatchedMovieModel;
-import pavlov.movie_list.movie.model.ViewMovieModel;
 import pavlov.movie_list.movie.service.MovieService;
-import pavlov.movie_list.user.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Daniel on 26-Apr-17.
@@ -53,7 +51,7 @@ public class MovieController {
         model.addAttribute("title", "Add Movie");
         model.addAttribute("view", "movie/add-movie");
         model.addAttribute("validateMovieModel", new ValidateMovieModel());
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @PostMapping("/add")
@@ -61,7 +59,7 @@ public class MovieController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Add Movie");
             model.addAttribute("view", "movie/add-movie");
-            return "base-layout";
+            return Constants.BASE_LAYOUT;
         }
 
         this.movieService.save(validateMovieModel);
@@ -85,7 +83,7 @@ public class MovieController {
         model.addAttribute("movies", movies);
         model.addAttribute("title", "Movies");
         model.addAttribute("view", "movie/all-movies");
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @GetMapping("/{id}")
@@ -99,7 +97,7 @@ public class MovieController {
         model.addAttribute("title", movie.getName());
         model.addAttribute("view", "movie/movie-info");
         model.addAttribute("movie", movie);
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @GetMapping("/add-to-list/{id}")
@@ -115,19 +113,19 @@ public class MovieController {
         model.addAttribute("validateWatchedMovieModel", validateWatchedMovieModel);
         model.addAttribute("title", "Add Movie to List");
         model.addAttribute("view", "movie/add-movie-to-list");
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @PostMapping("/add-to-list/{id}") //TODO: remove from list
     private String addToListPOST(@Valid @ModelAttribute("validateWatchedMovieModel") ValidateWatchedMovieModel validateWatchedMovieModel, BindingResult bindingResult, Model model, Principal principal, @PathVariable(name = "id") Long id, @RequestParam Byte rating) {
         if (this.movieService.movieAlreadyInList(id, principal.getName())) {
-            bindingResult.addError(new FieldError("validateWatchedMovieModel", "isAlreadyInList", "Movie is already in your list"));
+            bindingResult.addError(new FieldError("validateWatchedMovieModel", "isAlreadyInList", Constants.ALREADY_IN_LIST));
         }
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Add Movie To List");
             model.addAttribute("view", "movie/add-movie-to-list");
-            return "base-layout";
+            return Constants.BASE_LAYOUT;
         }
 
         validateWatchedMovieModel.setRating(rating);
@@ -142,16 +140,16 @@ public class MovieController {
         model.addAttribute("title", "My List");
         model.addAttribute("watchedMovies", watchedMovies);
         model.addAttribute("view", "user/list");
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @GetMapping("/approve")
     private String approveGET(Model model) {
         List<Movie> movies = this.movieService.getAllNotApproved();
-        model.addAttribute("title", "Movies to be approve");
+        model.addAttribute("title", "Movies to be approved");
         model.addAttribute("movies", movies);
         model.addAttribute("view", "movie/approve-movies");
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @GetMapping("/approve/{id}")
@@ -172,7 +170,7 @@ public class MovieController {
         model.addAttribute("title", "Delete movie");
         model.addAttribute("view", "movie/confirm-delete-movie");
         model.addAttribute("movieTitle", movie.getName());
-        return "base-layout";
+        return Constants.BASE_LAYOUT;
     }
 
     @PostMapping("/delete/{id}")
