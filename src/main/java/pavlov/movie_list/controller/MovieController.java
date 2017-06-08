@@ -100,59 +100,6 @@ public class MovieController {
         return Constants.BASE_LAYOUT;
     }
 
-    @GetMapping("/add-to-list/{id}")
-    private String addToListGET(@PathVariable(name = "id") Long id, Model model) {
-        Movie movie = this.movieService.getById(id);
-        if (movie == null) {
-            return "redirect:/";
-        }
-        String movieName = movie.getName();
-        ValidateWatchedMovieModel validateWatchedMovieModel = new ValidateWatchedMovieModel();
-        model.addAttribute("name", movieName);
-        model.addAttribute("id", id);
-        model.addAttribute("validateWatchedMovieModel", validateWatchedMovieModel);
-        model.addAttribute("title", "Add Movie to List");
-        model.addAttribute("view", "movie/add-movie-to-list");
-        return Constants.BASE_LAYOUT;
-    }
-
-    @PostMapping("/add-to-list/{id}") //TODO: add edit-in-list
-    private String addToListPOST(@Valid @ModelAttribute("validateWatchedMovieModel") ValidateWatchedMovieModel validateWatchedMovieModel, BindingResult bindingResult, Model model, Principal principal, @PathVariable(name = "id") Long id, @RequestParam Byte rating) {
-        if (this.movieService.movieAlreadyInList(id, principal.getName())) {
-            bindingResult.addError(new FieldError("validateWatchedMovieModel", "isAlreadyInList", Constants.ALREADY_IN_LIST));
-        }
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("title", "Add Movie To List");
-            model.addAttribute("view", "movie/add-movie-to-list");
-            return Constants.BASE_LAYOUT;
-        }
-
-        validateWatchedMovieModel.setRating(rating);
-        this.movieService.addWatchedMovie(validateWatchedMovieModel, principal.getName(), id);
-
-        return "redirect:/movies/my-list";
-    }
-
-    @GetMapping("/remove-list/{id}")
-    private String removeFromListGET(@PathVariable Long id, Principal principal){
-        WatchedMovie movie = this.movieService.getWatchedById(id);
-        if (movie != null && movie.getUser().getUsername().equals(principal.getName())){
-            this.movieService.deleteWatched(movie);
-        }
-
-        return "redirect:/movies/my-list";
-    }
-
-    @GetMapping("/my-list")
-    private String viewListGET(Model model, Principal principal) {
-        List<WatchedMovie> watchedMovies = this.movieService.getWatchedMoviesByUsername(principal.getName());
-        model.addAttribute("title", "My List");
-        model.addAttribute("watchedMovies", watchedMovies);
-        model.addAttribute("view", "user/current_user_list");
-        return Constants.BASE_LAYOUT;
-    }
-
     @GetMapping("/approve")
     private String approveGET(Model model) {
         List<Movie> movies = this.movieService.getAllNotApproved();
@@ -192,19 +139,5 @@ public class MovieController {
 
         this.movieService.delete(movie);
         return "redirect:/movies/approve";
-    }
-
-    @GetMapping("/{username}/list")
-    private String otherListGET(@PathVariable String username, Model model, Principal principal){
-        if (principal != null && (principal.getName().equals(username) || username.toLowerCase().equals(principal.getName().toLowerCase()))) {
-            return "redirect:/movies/my-list";
-        }
-
-        List<WatchedMovie> watchedMovies = this.movieService.getWatchedMoviesByUsername(username);
-        model.addAttribute("title", username + "'s List");
-        model.addAttribute("username", username);
-        model.addAttribute("watchedMovies", watchedMovies);
-        model.addAttribute("view", "user/other_user_list");
-        return Constants.BASE_LAYOUT;
     }
 }
