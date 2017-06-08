@@ -149,7 +149,7 @@ public class MovieController {
         List<WatchedMovie> watchedMovies = this.movieService.getWatchedMoviesByUsername(principal.getName());
         model.addAttribute("title", "My List");
         model.addAttribute("watchedMovies", watchedMovies);
-        model.addAttribute("view", "user/list");
+        model.addAttribute("view", "user/current_user_list");
         return Constants.BASE_LAYOUT;
     }
 
@@ -192,5 +192,19 @@ public class MovieController {
 
         this.movieService.delete(movie);
         return "redirect:/movies/approve";
+    }
+
+    @GetMapping("/{username}/list")
+    private String otherListGET(@PathVariable String username, Model model, Principal principal){
+        if (principal != null && (principal.getName().equals(username) || username.toLowerCase().equals(principal.getName().toLowerCase()))) {
+            return "redirect:/movies/my-list";
+        }
+
+        List<WatchedMovie> watchedMovies = this.movieService.getWatchedMoviesByUsername(username);
+        model.addAttribute("title", username + "'s List");
+        model.addAttribute("username", username);
+        model.addAttribute("watchedMovies", watchedMovies);
+        model.addAttribute("view", "user/other_user_list");
+        return Constants.BASE_LAYOUT;
     }
 }
