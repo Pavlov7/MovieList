@@ -11,7 +11,7 @@
                 <p><strong>Director: </strong><span th:text="*{director}"></span></p>
                 <p><strong>Producer: </strong><span th:text="*{producer}"></span></p>
                 <p><strong>Date aired: </strong><span th:text="${#dates.format(movie.airDate, 'dd-MMM-yyyy')}"></span></p>
-                <a class="card-button btn btn-primary" name="add" th:href="@{add-to-list/{id}(id=*{id})}">Add to my list</a>
+                <a class="card-button btn btn-primary" name="add" th:href="@{/add-to-list/{id}(id=*{id})}">Add to my list</a>
                 <br/>
                 <br/>
             </div>
