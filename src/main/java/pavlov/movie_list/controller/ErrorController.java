@@ -16,4 +16,11 @@ public class ErrorController {
         model.addAttribute("view", "error/403");
         return Constants.BASE_LAYOUT;
     }
+
+    @GetMapping("/404")
+    private String pageNotFound(Model model){
+        model.addAttribute("title", "Not Found");
+        model.addAttribute("view", "error/404");
+        return Constants.BASE_LAYOUT;
+    }
 }
