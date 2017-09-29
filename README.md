@@ -7,5 +7,5 @@ In addition, users can add new movies to the database, which have to be approved
 * Each user having a friends list and adding other users to it
 * Ability to upload a movie cover when adding a new movie to the database. (with possible automatic cover finding)
 * Showing average rating of each movie, calculated based on ratings given by users who have watched said movie
-* Web API
+* Web API -> New UI made with Angular
 * __Unit testing__
