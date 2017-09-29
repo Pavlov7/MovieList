@@ -99,4 +99,9 @@ public class MovieServiceImpl implements MovieService {
     public void deleteWatched(WatchedMovie movie) {
         this.watchedMovieRepository.delete(movie);
     }
+
+    @Override
+    public Iterable<Movie> getAll() {
+        return this.movieRepository.findAll();
+    }
 }

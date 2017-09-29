@@ -1,10 +1,10 @@
 package pavlov.movie_list.movie;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import pavlov.movie_list.movie.enums.Genre;
 import pavlov.movie_list.user.User;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -32,12 +32,14 @@ public class Movie {
     private String producer;
 
     //@Column(name = "watchedBy")
+    @JsonIgnore
     @OneToMany(mappedBy = "movie", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<WatchedMovie> watchedBy;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "admin_approved_id", referencedColumnName = "id")
     private User approvedBy;

@@ -38,4 +38,6 @@ public interface MovieService {
     WatchedMovie getWatchedById(Long id);
 
     void deleteWatched(WatchedMovie movie);
+
+    Iterable<Movie> getAll();
 }
