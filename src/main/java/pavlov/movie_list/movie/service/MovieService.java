@@ -1,5 +1,7 @@
 package pavlov.movie_list.movie.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pavlov.movie_list.movie.Movie;
 import pavlov.movie_list.movie.WatchedMovie;
@@ -15,11 +17,11 @@ import java.util.List;
 public interface MovieService {
     void save(ValidateMovieModel validateMovieModel);
 
-    List<Movie> getAllAscending();
+    Page<Movie> getAllAscending(Pageable page);
 
-    List<Movie> getAllDescending();
+    Page<Movie> getAllDescending(Pageable page);
 
-    List<Movie> getAllNotApproved();
+    Page<Movie> getAllNotApproved(Pageable page);
 
     Movie getById(Long id);
 

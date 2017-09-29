@@ -2,6 +2,8 @@ package pavlov.movie_list.movie.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pavlov.movie_list.movie.Movie;
 import pavlov.movie_list.movie.WatchedMovie;
@@ -39,18 +41,18 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllAscending() {
-        return this.movieRepository.getAllByApprovedByIsNotNullOrderByNameAsc();
+    public Page<Movie> getAllAscending(Pageable page) {
+        return this.movieRepository.getAllByApprovedByIsNotNullOrderByNameAsc(page);
     }
 
     @Override
-    public List<Movie> getAllDescending() {
-        return this.movieRepository.getAllByApprovedByIsNotNullOrderByNameDesc();
+    public Page<Movie> getAllDescending(Pageable page) {
+        return this.movieRepository.getAllByApprovedByIsNotNullOrderByNameDesc(page);
     }
 
     @Override
-    public List<Movie> getAllNotApproved() {
-        return this.movieRepository.getAllByApprovedByIsNullOrderByIdAsc();
+    public Page<Movie> getAllNotApproved(Pageable page) {
+        return this.movieRepository.getAllByApprovedByIsNullOrderByIdAsc(page);
     }
 
     @Override
@@ -78,9 +80,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void approveMovie(Long id, String adminUsername) {
-        Movie movie = this.movieRepository.getOne(id);
+        Movie movie = this.movieRepository.findOne(id);
         movie.setApprovedBy(this.userService.getByUsername(adminUsername));
-        this.movieRepository.saveAndFlush(movie);
+        this.movieRepository.save(movie);
     }
 
     @Override

@@ -10,4 +10,5 @@ public class Constants {
     public static final String INVALID_CREDENTIALS = "Invalid Credentials";
     public static final String ALREADY_IN_LIST = "Movie is already in your list";
     public static final String PASSWORDS_NOT_MATCH = "Passwords do not match";
+    public static final int MOVIES_PER_PAGE = 10;
 }

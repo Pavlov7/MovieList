@@ -2,6 +2,9 @@ package pavlov.movie_list.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,16 +71,16 @@ public class MovieController {
     }
 
     @GetMapping("")
-    private String allMoviesGET(Model model, HttpServletRequest httpServletRequest) {
-        List<Movie> movies = new ArrayList<>();
+    private String allMoviesGET(Model model, @PageableDefault(Constants.MOVIES_PER_PAGE) Pageable pageable, HttpServletRequest httpServletRequest) {
+        Page<Movie> movies = null;
         String filter = httpServletRequest.getParameter("filter");
         filter = filter == null ? "Ascending" : filter;
         switch (filter) {
             case "Ascending":
-                movies = this.movieService.getAllAscending();
+                movies = this.movieService.getAllAscending(pageable);
                 break;
             case "Descending":
-                movies = this.movieService.getAllDescending();
+                movies = this.movieService.getAllDescending(pageable);
                 break;
         }
         model.addAttribute("movies", movies);
@@ -101,8 +104,8 @@ public class MovieController {
     }
 
     @GetMapping("/approve")
-    private String approveGET(Model model) {
-        List<Movie> movies = this.movieService.getAllNotApproved();
+    private String approveGET(Model model, @PageableDefault(Constants.MOVIES_PER_PAGE) Pageable pageable) {
+        Page<Movie> movies = this.movieService.getAllNotApproved(pageable);
         model.addAttribute("title", "Movies to be approved");
         model.addAttribute("movies", movies);
         model.addAttribute("view", "movie/approve-movies");

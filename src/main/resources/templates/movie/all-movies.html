@@ -31,4 +31,14 @@
             </div>
         </div>
     </div>
+    <br/>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" th:href="${movies.hasPrevious()} ? '/movies?page=' + ${movies.previousPageable().getPageNumber()}">Previous</a></li>
+            <li class="page-item" th:each=" i : ${#numbers.sequence(0, movies.getTotalPages() - 1)}">
+                <a class="page-link" th:text="${i + 1}" th:href="|/movies?page=${i}|"></a>
+            </li>
+            <li class="page-item"><a class="page-link" th:href="${movies.hasNext()} ? '/movies?page=' + ${movies.nextPageable().getPageNumber()}">Next</a></li>
+        </ul>
+    </nav>
 </div>
