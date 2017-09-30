@@ -12,7 +12,7 @@ import pavlov.movie_list.movie.service.MovieService;
  */
 
 @RestController
-@RequestMapping("/api/movies") // TODO: extract '/api' as global rest service route
+@RequestMapping("/movies")
 public class MoviesApiController {
     @Autowired
     private MovieService movieService;
